@@ -19,6 +19,7 @@ class LessonsController extends ApiController
      */
     public function __construct(LessonTransformer $lessonTransformer)
     {
+        $this->middleware('auth.basic', ['only' => ['store', 'update']]);
         $this->lessonTransformer = $lessonTransformer;
     }
 
@@ -42,15 +43,24 @@ class LessonsController extends ApiController
         //
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        if (!$request->input('title') || !$request->input('body')) {
+            return $this->setStatusCode(422)->responseError('validate error');
+        }
+
+        $res = Lesson::create($request->all());
+
+        if ($res) {
+            return $this->responseSuccess('创建成功');
+        } else {
+            return $this->responseError('创建失败');
+        }
     }
 
     /**
@@ -71,7 +81,7 @@ class LessonsController extends ApiController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -82,8 +92,8 @@ class LessonsController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -94,15 +104,13 @@ class LessonsController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
     }
-
-
 
 
 }
