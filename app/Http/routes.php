@@ -23,6 +23,10 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
     $api->group(['namespace' => 'App\Api\Controllers'],function ($api) {
-        $api->get('lessons', 'LessonsController@index');
+        $api->group(['middleware' => ['jwt.auth']], function ($api) {
+            $api->get('lessons', 'LessonsController@index');
+        });
+        $api->post('user/login', 'AuthController@authenticate');
+        $api->post('user/register', 'AuthController@register');
     });
 });
