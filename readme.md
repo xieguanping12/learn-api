@@ -3,3 +3,5 @@
 - jwt
 - dingo
 - transform
+- oauth2.0
+- xiaosier/libweibo
