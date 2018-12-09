@@ -25,6 +25,7 @@ $api->version('v1', function ($api) {
     $api->group(['namespace' => 'App\Api\Controllers'],function ($api) {
         $api->group(['middleware' => ['jwt.auth']], function ($api) {
             $api->get('lessons', 'LessonsController@index');
+            $api->get('user/me', 'AuthController@getAuthenticatedUser');
         });
         $api->post('user/login', 'AuthController@authenticate');
         $api->post('user/register', 'AuthController@register');
