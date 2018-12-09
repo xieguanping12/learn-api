@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Api\Controllers;
+
+
+use App\Api\Transformers\LessonTransformer;
+use App\Lesson;
+
+class LessonsController extends BaseController
+{
+    public function index()
+    {
+        $lessons = Lesson::all();
+
+        return $this->collection($lessons, new LessonTransformer());
+    }
+}
